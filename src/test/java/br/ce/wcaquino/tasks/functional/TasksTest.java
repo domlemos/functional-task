@@ -16,8 +16,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 public class TasksTest {
 	
 	public WebDriver acessarAplicacao() throws MalformedURLException   {
-		ChromeOptions cap = new ChromeOptions();		
-		WebDriver driver = new RemoteWebDriver(new URL("http://172.23.0.1:4444/wd/hub/"), cap);
+		DesiredCapabilities cap = DesiredCapabilities.chrome();		
+		WebDriver driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub/"), cap);
 		driver.navigate().to("localhost:8001/tasks");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		return driver;
@@ -26,8 +26,8 @@ public class TasksTest {
 	
 	@Test
 	public void testeAmbiente() throws MalformedURLException {
-		WebDriver driver = new ChromeDriver();
-		//WebDriver driver = acessarAplicacao();
+		//WebDriver driver = new ChromeDriver();
+		WebDriver driver = acessarAplicacao();
 		try {
 			driver.navigate().to("http://192.168.5.95:8001/tasks");
 			
@@ -53,8 +53,8 @@ public class TasksTest {
 	
 	 @Test public void naoDeveSalvarTarefaSemDescricao() throws
 	  MalformedURLException { 
-		  WebDriver driver = new ChromeDriver(); 
-		  //WebDriver driver = acessarAplicacao();
+		  //WebDriver driver = new ChromeDriver(); 
+		  WebDriver driver = acessarAplicacao();
 		  try {
 		  driver.navigate().to("http://192.168.5.95:8001/tasks");
 		  
