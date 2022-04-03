@@ -1,5 +1,7 @@
 package br.ce.wcaquino.tasks.functional;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
@@ -7,14 +9,27 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class TasksTest {
+	
+	public WebDriver acessarAplicacao() throws MalformedURLException   {
+		ChromeOptions cap = new ChromeOptions();		
+		WebDriver driver = new RemoteWebDriver(new URL("http://172.23.0.1:4444/wd/hub/"), cap);
+		driver.navigate().to("localhost:8001/tasks");
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		return driver;
+	}
+	
+	
 	@Test
-	public void testeAmbiente() {
+	public void testeAmbiente() throws MalformedURLException {
 		WebDriver driver = new ChromeDriver();
-		
+		//WebDriver driver = acessarAplicacao();
 		try {
-			driver.navigate().to("http://localhost:8001/tasks");
+			driver.navigate().to("http://192.168.5.95:8001/tasks");
 			
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);			
 
@@ -35,28 +50,30 @@ public class TasksTest {
 		}
 	}
 	
-	@Test
-	public void naoDeveSalvarTarefaSemDescricao() {
-		WebDriver driver = new ChromeDriver();
-		
-		try {
-			driver.navigate().to("http://localhost:8001/tasks");
-			
-			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);			
-
-			driver.findElement(By.id("addTodo")).click();			
-			
-			driver.findElement(By.id("dueDate")).sendKeys("10/10/2030");
-			
-			driver.findElement(By.id("saveButton")).click();
-			
-			String message = driver.findElement(By.id("message")).getText();
-			
-			Assert.assertEquals("Fill the task description", message);
-		} finally {
-			driver.quit();
-		}
-	}
+	
+	 @Test public void naoDeveSalvarTarefaSemDescricao() throws
+	  MalformedURLException { 
+		  WebDriver driver = new ChromeDriver(); 
+		  //WebDriver driver = acessarAplicacao();
+		  try {
+		  driver.navigate().to("http://192.168.5.95:8001/tasks");
+		  
+		  driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		  
+		  driver.findElement(By.id("addTodo")).click();
+		  
+		  driver.findElement(By.id("dueDate")).sendKeys("10/10/2030");
+		  
+		  driver.findElement(By.id("saveButton")).click();
+		  
+		  String message = driver.findElement(By.id("message")).getText();
+	  
+	  Assert.assertEquals("Fill the task description", message); 
+	  } finally {
+		  	driver.quit(); 
+	  	} 
+	  }
+	 
 }
 
 
